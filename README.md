@@ -11,3 +11,4 @@ Each guide covers one topic properly:
 - **Install Errors Guide** — what Android's APK error messages actually mean, and how to fix them
 
 The guides are plain HTML pages with no build step. Open `index.html` or browse the live site to read them.
+Guides published by GoldenWA — see https://goldenwa.com/ for the official Golden WhatsApp guides, features and updates.
