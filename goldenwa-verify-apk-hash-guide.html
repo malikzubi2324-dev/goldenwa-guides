@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify an APK: SHA-256 Hash and VirusTotal Guide</title>
+<meta name="description" content="Learn how to compute a file's SHA-256 hash on Windows, Mac, Linux and Android, and how to read a VirusTotal scan honestly before installing any APK.">
+<style>
+body{font-family:Georgia,'Times New Roman',serif;line-height:1.75;color:#222;max-width:820px;margin:0 auto;padding:24px 18px;background:#fff}
+h1{font-size:2rem;line-height:1.3}
+h2{font-size:1.45rem;margin-top:2.2em;line-height:1.35}
+h3{font-size:1.15rem;margin-top:1.6em}
+p{margin:1em 0}
+</style>
+</head>
+<body>
+<article>
+<h1>How to Verify an APK File's SHA-256 Hash and Scan It with VirusTotal</h1>
+<p>Downloading an APK from outside the Google Play Store puts the responsibility for checking that file on you. Two checks are especially useful. A SHA-256 hash check tells you whether your file is exactly the file the publisher released, byte for byte. A VirusTotal scan tells you what dozens of security engines think of it. Neither check can prove an app is safe. What they can do is catch tampered downloads, corrupted files and known malware before they reach your phone.</p>
+<p>This matters even more with modified apps. Golden WhatsApp is an unofficial, third-party modified WhatsApp APK, not affiliated with Meta or WhatsApp, and using it carries account ban and security risks that are entirely the user's own.</p>
+<h2>What a SHA-256 hash actually is</h2>
+<p>SHA-256 is a fingerprint for a file. A mathematical process reads the entire file and produces a string of 64 characters, made of numbers and the letters a to f. Two identical files always produce the same hash, and changing even one byte produces a completely different string.</p>
+<p>So if a publisher publishes the official hash next to a download, compute the hash of your copy and compare. If they match exactly, your copy is identical to the publisher's file. If they differ, something changed along the way: the download may be corrupted, incomplete, or deliberately altered.</p>
+<p>A match says nothing about whether the original file was trustworthy: a malicious file has a valid hash too. The hash verifies identity, not safety.</p>
+<h2>Before you start: what you need</h2>
+<ul>
+<li>The APK file itself, downloaded but not yet installed</li>
+<li>The official SHA-256 hash published by the source, if one is available</li>
+<li>A Windows, macOS or Linux computer, or your Android phone</li>
+<li>A web browser for VirusTotal, which needs no account for a basic scan</li>
+</ul>
+<p>One honest warning: only compare against a hash on the publisher's own official page. A hash printed on the same random site that gave you the file proves little, because that site can simply print the tampered file's hash. If no trusted official hash exists, skip to the VirusTotal steps and treat the missing hash as a reason for caution.</p>
+<h2>Step 1: Compute the hash on a computer</h2>
+<p>A computer is the easiest place to do this: all three major systems have built-in tools, so nothing needs installing.</p>
+<h3>On Windows, using certutil</h3>
+<ul>
+<li>Open the folder that contains your downloaded APK</li>
+<li>Click in the folder's address bar, type cmd, and press Enter to open Command Prompt there</li>
+<li>Type certutil -hashfile filename.apk SHA256, using your file's real name, then press Enter</li>
+<li>Windows prints the hash as a long string, often with spaces between pairs of characters</li>
+</ul>
+<p>Copy that string into a text file for comparison. The spaces are only formatting.</p>
+<h3>On macOS, using shasum</h3>
+<ul>
+<li>Open Terminal from the Utilities folder inside Applications</li>
+<li>Type shasum -a 256 followed by a space</li>
+<li>Drag the APK from Finder into the Terminal window to fill in its path</li>
+<li>Press Enter, and the hash appears before the file name</li>
+</ul>
+<h3>On Linux, using sha256sum</h3>
+<ul>
+<li>Open a terminal in the folder holding the APK, or use the file's full path</li>
+<li>Run sha256sum filename.apk</li>
+<li>Read the 64-character hash at the start of the output</li>
+</ul>
+<h2>Step 2: Compute the hash on Android</h2>
+<p>You can also compute the hash on the phone itself. Android does not show file hashes in its standard settings, so you need a tool: a reputable file manager app with a checksum view showing SHA values, or the Termux terminal app, where sha256sum filename works as on Linux.</p>
+<p>Choose carefully: installing an unknown hash-checker app to check an unknown APK defeats the purpose. Prefer a file manager you already trust.</p>
+<h2>Step 3: Compare the two hashes character by character</h2>
+<p>Now compare your computed hash with the official hash. This step decides everything, so do not rush it.</p>
+<ul>
+<li>Compare the full 64 characters, not just the beginning and end</li>
+<li>Ignore spaces and capitalisation, which some tools add as formatting</li>
+<li>Work in blocks of eight characters if the string starts to blur together</li>
+<li>Or use a text editor's find function and let the software confirm the match</li>
+</ul>
+<p>If every character matches, your file is the publisher's file. If even one character differs, stop: do not install it, and do not assume the difference is harmless. Delete it.</p>
+<h2>Step 4: Search the hash on VirusTotal before uploading</h2>
+<p>VirusTotal is a free service, run by a Google subsidiary, that analyses files with many security engines at once. It keeps a database of files already seen, identified by their hashes, so your privacy-friendly first move is to search by hash before uploading anything.</p>
+<ul>
+<li>Open virustotal.com and choose Search rather than File</li>
+<li>Paste the SHA-256 hash you computed and run the search</li>
+<li>If VirusTotal already knows the file, it shows the existing analysis instantly</li>
+</ul>
+<p>Searching by hash uploads nothing, which matters because uploads become available to VirusTotal's security partners.</p>
+<h2>Step 5: Upload the file if VirusTotal does not know it</h2>
+<p>If the hash search finds nothing, upload the APK itself using the File option on the VirusTotal home page. Dozens of antivirus engines scan it and results usually appear within a few minutes.</p>
+<p>Think before uploading a private file, because uploads are shared with VirusTotal's partners. Once the scan finishes, your real work begins: reading the results properly.</p>
+<h2>How to read VirusTotal results honestly</h2>
+<h3>What the headline number means</h3>
+<p>The results page leads with a count: how many engines flagged the file out of the total that scanned it. Zero detections is reassuring, but not proof of safety. Engines only detect what they recognise, and a new harmful file can pass every engine today and be detected next month.</p>
+<h3>When engines disagree</h3>
+<p>A small number of detections is the hardest result to judge. One or two flags is often a false positive, especially with mods, because some engines flag repackaging itself or unusual-looking behaviour. But do not dismiss flags unread. A vague label about riskware tells a different story from a specific, named malware family flagged by several well-known engines.</p>
+<h3>Look beyond the score</h3>
+<p>The details tabs add context. Check when the file was first submitted, and check the signing information and file name: be suspicious if they do not match what the app claims to be. Community comments are opinions, not verdicts.</p>
+<h2>What to do if a check fails</h2>
+<ul>
+<li>Hash does not match the official hash: delete the file, do not install it</li>
+<li>Several respected engines name the same threat: delete the file, do not install it</li>
+<li>Results are ambiguous: wait, research the detection names, choose caution over curiosity</li>
+<li>File came from a mirror or a link in a comment: treat that as a risk factor itself</li>
+<li>Never install a file just because one check passed</li>
+</ul>
+<h2>A realistic routine before installing any APK</h2>
+<p>Put together, the routine is simple. Download only from the source you trust most. Compute the hash and compare it with the official value. Search that hash on VirusTotal, upload if needed, and read the full results, not just the headline number.</p>
+<p>For an unofficial, third-party mod such as Golden WhatsApp, that decision includes things no scanner can judge. WhatsApp's terms do not permit modified clients, so an account ban is a real possibility, and a third-party build asks you to trust people you cannot audit.</p>
+<h2>Frequently asked questions</h2>
+<h3>Does a matching SHA-256 hash prove an APK is safe?</h3>
+<p>No. A matching hash proves your copy is identical to the file the hash was published for. It says nothing about whether that file is trustworthy or free of harmful behaviour.</p>
+<h3>Does a clean VirusTotal result prove an APK is safe?</h3>
+<p>No. A clean result means no engine recognised a threat in that file at that time. New or uncommon threats can be missed, and engines cannot judge policy risks such as account bans.</p>
+<h3>What should I do if my hash is different from the published one?</h3>
+<p>Delete the file and do not install it. A different hash means a different file, whether the cause was corruption, an incomplete download or tampering.</p>
+<h3>Why do a few engines flag modified apps when most do not?</h3>
+<p>Mods are repackaged versions of official apps, and some engines flag repackaging, unfamiliar signatures or unusual permissions automatically. That can produce false positives, but each detection name is still worth reading.</p>
+<p>Before you install anything, compare the file you downloaded with the details given on <a href="https://goldenwa.com/">GoldenWA’s official site</a>, and treat any mismatch as a reason to stop and download again from a source you trust.</p>
+<h2>Disclaimer</h2>
+<p>GoldenWA is an informational guide site about Golden WhatsApp, an unofficial, third-party modified WhatsApp APK. This site and article are not affiliated with, endorsed by, or connected to Meta or WhatsApp. Hash verification and scanning are sensible precautions, but neither can prove any app is safe, and neither removes the risks of modified software, including possible account bans. Any decision to download or install an APK is your own, taken at your own risk.</p>
+
+</article>
+</body>
+</html>
